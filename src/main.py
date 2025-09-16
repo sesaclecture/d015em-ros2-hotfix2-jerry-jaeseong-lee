@@ -27,8 +27,7 @@ def task_source_ros() -> tuple[int, str, str]:
     문제 1:
     ROS2 Jazzy 환경을 불러오는 명령어를 반환하시오.
     """
-    # TODO: 여기에 코드를 작성하시오
-    cmd = ""
+    cmd = "source /opt/ros/jazzy/setup.bash && env"
     return _run(f"bash -lc '{cmd}'")
 
 
@@ -46,12 +45,18 @@ def task_pkg_create_cmd() -> tuple[int, str, str]:
       - maintainer email은 kcci@kcci.com으로 지정
       - 코드 설명은 D015 homework ROS2 workspace로 지정
     """
-    # TODO: 여기에 코드를 작성하시오
-    workspace = Path.home()
-    src_dir = ""
+    workspace = Path.home() / "ws_ros2"
+    src_dir = workspace / "src"
     src_dir.mkdir(parents=True, exist_ok=True)
 
-    cmd = ""
+    cmd = (
+        "ros2 pkg create ros_pkg --build-type ament_python "
+        "--license MIT "
+        '--maintainer-name "kcci" '
+        '--maintainer-email "kcci@kcci.com" '
+        "--dependencies rclpy std_msgs "
+        '--description "D015 homework ROS2 workspace"'
+    )
     return _run(cmd, cwd=os.path.join(workspace, "src"))
 
 
@@ -60,10 +65,9 @@ def task_colcon_build_cmd() -> tuple[int, str, str]:
     문제 3:
     workspace(~/ws_ros2) 경로에서 ros2 빌드하는 명령어를 반환하시오.
     """
-    # TODO: 여기에 코드를 작성하시오
-    workspace = Path.home() + "???"
+    workspace = Path.home() / "ws_ros2"
     workspace.mkdir(parents=True, exist_ok=True)
-    cmd = "???"
+    cmd = "colcon build --symlink-install"
     return _run(cmd, cwd=workspace)
 
 
@@ -72,8 +76,7 @@ def task_xhost_cmd() -> tuple[int, str, str]:
     문제 4:
     root 유저에 X 권한을 여는 xhost 명령어를 반환하시오.
     """
-    # TODO: 여기에 코드를 작성하시오
-    cmd = "..."
+    cmd = "xhost +local:root"
     return _run(cmd)
 
 
@@ -91,9 +94,14 @@ def task_docker_run_cmd() -> str:
       - 실행 명령은 bash 실행
       - -v /tmp/.X11-unix:/tmp/.X11-unix:rw
     """
-    # TDO: 여기에 코드를 작성하시오
     return (
-        "docker run -it --rm --name ...."
+        "docker run -it --rm --name humble-gui "
+        "--network=host "
+        "-e DISPLAY=$DISPLAY "
+        "-v /tmp/.X11-unix:/tmp/.X11-unix:rw "
+        "-e ROS_DOMAIN_ID=42 "
+        "-e RMW_IMPLEMENTATION=rmw_cyclonedds_cpp "
+        "arm64v8/ros:humble bash"
     )
 
 
