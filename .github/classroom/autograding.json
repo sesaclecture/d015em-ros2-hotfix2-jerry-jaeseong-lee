@@ -1,0 +1,16 @@
+a{
+  "tests": [
+    {
+      "name": "1) source",
+      "setup": "python3 -m pip install -q pytest==7.2.2",
+      "run": "pytest -q tests/test_main.py::test_source_ros_env_ok",
+      "timeout": 120,
+      "points": 1
+    },
+    { "name": "2) pkg", "run": "pytest -q tests/test_main.py::test_pkg_create_cmd", "timeout": 120, "points": 1 },
+    { "name": "3) colcon", "run": "pytest -q tests/test_main.py::test_colcon_build_cmd", "timeout": 120, "points": 1 },
+    { "name": "4) xhost", "run": "pytest -q tests/test_main.py::test_xhost_cmd", "timeout": 120, "points": 1 },
+    { "name": "5) docker", "run": "pytest -q tests/test_main.py::test_docker_run_cmd", "timeout": 120, "points": 1 }
+  ],
+  "version": 1
+}
